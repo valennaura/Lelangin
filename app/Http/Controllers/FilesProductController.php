@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Produk;
+use App\Models\FilesProduct;
 use Illuminate\Http\Request;
 
-class ProdukController extends Controller
+class FilesProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class ProdukController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Produk  $produk
+     * @param  \App\Models\FilesProduct  $filesProduct
      * @return \Illuminate\Http\Response
      */
-    public function show(Produk $produk)
+    public function show(FilesProduct $filesProduct)
     {
         //
     }
@@ -52,10 +52,10 @@ class ProdukController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Produk  $produk
+     * @param  \App\Models\FilesProduct  $filesProduct
      * @return \Illuminate\Http\Response
      */
-    public function edit(Produk $produk)
+    public function edit(FilesProduct $filesProduct)
     {
         //
     }
@@ -64,10 +64,10 @@ class ProdukController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Produk  $produk
+     * @param  \App\Models\FilesProduct  $filesProduct
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Produk $produk)
+    public function update(Request $request, FilesProduct $filesProduct)
     {
         //
     }
@@ -75,10 +75,10 @@ class ProdukController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Produk  $produk
+     * @param  \App\Models\FilesProduct  $filesProduct
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Produk $produk)
+    public function destroy(FilesProduct $filesProduct)
     {
         //
     }

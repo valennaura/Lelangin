@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class AuctionController extends Controller
 {
-    private $auction;
+    public $auction;
 
     public function __construct(Auction $auction)
     {
@@ -16,10 +16,12 @@ class AuctionController extends Controller
 
     public function index(Request $request)
     {
-        if($request->get('page')) {
-            $auction = $this->auction->paginate($request->get('page'));
+        $query = $this->auction->query();
+        $auction = $query->with('Product', 'User')->orderBy('price', 'DESC');
+        if($request->get('pagination') && $request->get('pagination') != null) {
+            $auction = $query->paginate($request->get('pagination'));
         } else {
-            $auction = $this->auction->all();
+            $auction = $query->get();
         }
         return $this->onSuccess('Lelang', $auction, 'Ditemukan');
     }

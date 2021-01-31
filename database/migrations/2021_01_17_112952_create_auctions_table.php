@@ -13,12 +13,12 @@ class CreateAuctionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('auction', function (Blueprint $table) {
+        Schema::create('auctions', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->bigInteger('product_id')->unsigned();
-            $table->foreign('product_id')->references('id')->on('product')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->decimal('price');
             $table->string('status');
             $table->timestamps();

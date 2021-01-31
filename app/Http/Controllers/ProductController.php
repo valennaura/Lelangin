@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
 
-    private $product;
+    public $product;
 
     public function __construct(Product $product)
     {
@@ -17,10 +17,24 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        if($request->get('page')) {
-            $product = $this->product->paginate($request->get('page'));
+        $query = $this->product->query();
+        $product = $query->with('User', 'Category');
+        if($request->get('name') && $request->get('name') != null) {
+            $product = $query->where('name', 'LIKE', '%'.$request->get('name').'%');
+        }
+        if($request->get('min') && $request->get('min') != null) {
+            $product = $query->where('price', '>=', $request->get('min'));
+        }
+        if($request->get('max') && $request->get('max') != null) {
+            $product = $query->where('price', '<=', $request->get('max'));
+        }
+        if($request->get('status') && $request->get('status') != null) {
+            $query->where('status', $request->get('status'));
+        }
+        if($request->get('pagination')) {
+            $product = $query->paginate($request->get('pagination'));
         } else {
-            $product = $this->product->all();
+            $product = $query->get();
         }
         return $this->onSuccess('Produk', $product, 'Ditemukan');
     }
@@ -42,7 +56,7 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = $this->product->find($id);
+        $product = $this->product->with('User', 'Category')->where('id', $id)->first();
         return $this->onSuccess('Produk', $product, 'Ditemukan');
     }
 
@@ -54,9 +68,9 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $product = $this->product->where('id', $id)->update($request->all());
-            $product_data = $this->product->find($id);
-            return $this->onSuccess('Produk', $product_data, 'Diupdate');
+            $update = $this->product->where('id', $id)->update($request->all());
+            $product = $this->product->find($id);
+            return $this->onSuccess('Produk', $product, 'Diupdate');
         } catch (\Exception $e) {
             return $this->onError($e);
         }
@@ -64,8 +78,8 @@ class ProductController extends Controller
 
     public function destroy($id)
     {
-        $product_data = $this->product->find($id);
-        $product = $this->product->destroy($id);
-        return $this->onSuccess('Produk', $product_data, 'Dihapus');
+        $product = $this->product->find($id);
+        $delete = $this->product->destroy($id);
+        return $this->onSuccess('Produk', $product, 'Dihapus');
     }
 }

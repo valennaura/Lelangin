@@ -9,7 +9,12 @@ class FilesProduct extends Model
 {
     use HasFactory;
 
-    protected $table = 'file_product';
+    protected $table = 'files_products';
 
     protected $fillable = ['product_id', 'name', 'type'];
+
+    public function Product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

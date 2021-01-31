@@ -13,9 +13,9 @@ class AddCategoryProductsToProductTable extends Migration
      */
     public function up()
     {
-        Schema::table('product', function (Blueprint $table) {
+        Schema::table('products', function (Blueprint $table) {
             $table->bigInteger('category_id')->unsigned();
-            $table->foreign('category_id')->references('id')->on('category_product')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories_products')->onDelete('cascade');
         });
     }
 

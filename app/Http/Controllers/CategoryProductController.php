@@ -8,20 +8,30 @@ use Illuminate\Http\Request;
 class CategoryProductController extends Controller
 {
 
-    private $category;
+    public $category;
 
-    public function __construct(CategoryProduct $category)
+    public function __construct(CategoryProduct $ctr)
     {
-        $this->category = $category;
+        $this->category = $ctr;
     }
 
     public function index(Request $request)
     {
-        if($request->get('page')) {
-            $category = $this->category->paginate($request->get('page'));
-        } else {
-            $category = $this->category->all();
+        $query = $this->category->query();
+        if($request->get('sort') && $request->get('sort') != null) {
+            $category = $query->orderBy('id', $request->get('sort'));
         }
+        if($request->get('name') && $request->get('name') != null) {
+            $category = $query->where('name', 'LIKE', '%'.$request->get('name').'%');
+        }
+
+        if($request->get('pagination') && $request->get('pagination') != null) {
+            $category = $query->paginate($request->get('pagination'));
+        }
+        else {
+            $category = $query->get();
+        }
+
         return $this->onSuccess('Kategori Produk', $category, 'Ditemukan');
     }
 
@@ -42,7 +52,7 @@ class CategoryProductController extends Controller
 
     public function show($id)
     {
-        $category = $this->category->find($id);
+        $category = $this->category->with('Product')->where('id', $id)->first();
         return $this->onSuccess('Kategori Produk', $category, 'Ditemukan');
     }
 
@@ -65,7 +75,7 @@ class CategoryProductController extends Controller
     public function destroy($id)
     {
         $category_data = $this->category->find($id);
-        $category = $this->category->delete($id);
+        $category = $this->category->destroy($id);
         return $this->onSuccess('Kategori Produk', $category_data, 'Dihapus');
     }
 }
